@@ -1,0 +1,4 @@
+Alien invasion game. There will be spaceship on the bottom center.
+The player can move the ship left and right and shoot up.
+
+Alien horde will be move across screen and slowly move down. 
