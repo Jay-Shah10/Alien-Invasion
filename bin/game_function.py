@@ -3,20 +3,48 @@ import pygame
 
 
 def check_events(ship):
+    """
+    checks for pygame events.
+    These can be key presses or mouse clicks.
+    :param ship: ship object.
+    :return: Response to event.
+    """
     # Responds to key presses and mouse events.
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RIGHT:
-                # move the ship right by one.
-                ship.move_right = True
+            check_keydown_events(event, ship)
 
         elif event.type == pygame.KEYUP:
             # if the key is released it will stop the movement.
-            if event.key == pygame.K_RIGHT:
-                ship.move_right = False
+            check_keyup_events(event, ship)
 
+
+def check_keydown_events(event, ship):
+    """
+    Responds to key pressing down.
+    :param event: pygame event.
+    :param ship: ship object
+    :return: boolean
+    """
+    if event.key == pygame.K_RIGHT:
+        # move the ship right by one.
+        ship.move_right = True
+    elif event.key == pygame.K_LEFT:
+        ship.move_left = True
+
+def check_keyup_events(event, ship):
+    """
+    Responds to key releases.
+    :param event: pygame event.
+    :param ship: ship object.
+    :return: boolean
+    """
+    if event.key == pygame.K_RIGHT:
+        ship.move_right = False
+    elif event.key == pygame.K_LEFT:
+        ship.move_left = False
 
 def update_screen(settings, screen, ship):
     """
