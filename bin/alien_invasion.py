@@ -1,10 +1,11 @@
 import os
 import sys
 import pygame
-
+from pygame.sprite import Group
 from bin.settings import Settings
 from bin.ship import Ship
 from bin import game_function as gf
+
 
 
 def run_game():
@@ -17,13 +18,16 @@ def run_game():
 
     # make a ship.
     ship = Ship(setting=settings, screen=screen)
+    # Bullet Group.
+    bullets = Group()
 
     # Strating the main loop.
     while True:
         # Watch for mouse and key events.
-        gf.check_events(ship)
+        gf.check_events(settings, screen, ship, bullets)
         ship.update()
-        gf.update_screen(settings, screen, ship)
+        bullets.update()
+        gf.update_screen(settings, screen, ship, bullets)
 
 
 run_game()

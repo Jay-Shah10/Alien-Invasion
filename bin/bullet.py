@@ -41,5 +41,5 @@ class Bullet(Sprite):
         Draw the bullet.
         :return:
         """
-        pygame.draw.rect(Surface=self.screen, color=self.color, Rect=self.rect)
+        pygame.draw.rect(self.screen, self.color, self.rect)
 

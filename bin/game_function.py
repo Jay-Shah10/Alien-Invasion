@@ -1,8 +1,9 @@
 import sys
 import pygame
+from bin.bullet import Bullet
 
 
-def check_events(ship):
+def check_events(settings, screen, ship, bullets):
     """
     checks for pygame events.
     These can be key presses or mouse clicks.
@@ -14,14 +15,14 @@ def check_events(ship):
         if event.type == pygame.QUIT:
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            check_keydown_events(event, ship)
+            check_keydown_events(event, settings, screen, ship, bullets)
 
         elif event.type == pygame.KEYUP:
             # if the key is released it will stop the movement.
             check_keyup_events(event, ship)
 
 
-def check_keydown_events(event, ship):
+def check_keydown_events(event, settings, screen, ship, bullets):
     """
     Responds to key pressing down.
     :param event: pygame event.
@@ -33,6 +34,11 @@ def check_keydown_events(event, ship):
         ship.move_right = True
     elif event.key == pygame.K_LEFT:
         ship.move_left = True
+    elif event.type == pygame.K_SPACE:
+        # Create a new bullet and add to group.
+        new_bullet = Bullet(settings, screen, ship)
+        bullets.add(new_bullet)
+
 
 def check_keyup_events(event, ship):
     """
@@ -46,7 +52,8 @@ def check_keyup_events(event, ship):
     elif event.key == pygame.K_LEFT:
         ship.move_left = False
 
-def update_screen(settings, screen, ship):
+
+def update_screen(settings, screen, ship, bullets):
     """
     Update the images on the screen and flip to the new screen.
     :param settings: alien invasion settings.
@@ -57,7 +64,11 @@ def update_screen(settings, screen, ship):
 
     # Redraw the screen during each pass through the loop.
     screen.fill(settings.bg_color)
+    # Redraw all bullets behind ship and aliens.
+    for bullet in bullets.sprites():
+        bullet.draw_bullet()
     ship.blitme()
+
 
     # make the most recent drawn screen visible.
     pygame.display.flip()
