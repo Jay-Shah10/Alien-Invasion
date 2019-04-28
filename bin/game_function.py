@@ -1,6 +1,6 @@
 import sys
 import pygame
-from bin.bullet import Bullet
+from bullet import Bullet
 
 
 def check_events(settings, screen, ship, bullets):
@@ -34,10 +34,9 @@ def check_keydown_events(event, settings, screen, ship, bullets):
         ship.move_right = True
     elif event.key == pygame.K_LEFT:
         ship.move_left = True
-    elif event.type == pygame.K_SPACE:
-        # Create a new bullet and add to group.
-        new_bullet = Bullet(settings, screen, ship)
-        bullets.add(new_bullet)
+    elif event.key == pygame.K_SPACE:
+        fire_bullets(settings=settings, screen=screen, ship=ship, bullets=bullets)
+        
 
 
 def check_keyup_events(event, ship):
@@ -51,6 +50,34 @@ def check_keyup_events(event, ship):
         ship.move_right = False
     elif event.key == pygame.K_LEFT:
         ship.move_left = False
+
+
+def fire_bullets(settings, screen, ship, bullets):
+    """
+    settings used to fire bullets from the ship, when space bar is pressed.
+    :param settings: bullet settings.
+    :param screen: pygame screen object.
+    :param ship: ship object.
+    :param bullets: bullet objects (pygame.spirte)
+    :return: bullet firing when the space bar is pressed.
+    """
+    # Create a new bullet and add to group.
+    if len(bullets) < settings.bullets_allowed: # puts a limit on bullets. (3).
+        new_bullet = Bullet(settings, screen, ship)
+        bullets.add(new_bullet)
+
+
+def update_bullets(bullets):
+    """
+    Keeps track of bullet behavior. 
+    :parm bullets: bullet object that ship will fire.
+    :return: bullet management.
+    """
+    bullets.update()
+    # Delete bullets once they pass the screen.
+    for bullet in bullets.copy():
+        if bullet.rect.bottom <= 0: # when the bullets gets past the top of the screen.
+            bullets.remove(bullet)
 
 
 def update_screen(settings, screen, ship, bullets):
