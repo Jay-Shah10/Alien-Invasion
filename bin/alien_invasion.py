@@ -2,9 +2,9 @@ import os
 import sys
 import pygame
 from pygame.sprite import Group
-from bin.settings import Settings
-from bin.ship import Ship
-from bin import game_function as gf
+from settings import Settings
+from ship import Ship
+import game_function as gf
 
 
 
@@ -26,7 +26,7 @@ def run_game():
         # Watch for mouse and key events.
         gf.check_events(settings, screen, ship, bullets)
         ship.update()
-        bullets.update()
+        gf.update_bullets(bullets)
         gf.update_screen(settings, screen, ship, bullets)
 
 
